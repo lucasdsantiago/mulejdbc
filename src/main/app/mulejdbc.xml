@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <jdbc-ee:postgresql-data-source name="PostgreSQL_DB_PRODABEL" user="postgres" password="postgres" url="jdbc:postgresql://localhost:5433/rh-prodabel" transactionIsolation="UNSPECIFIED" doc:name="PostgreSQL Data Source"></jdbc-ee:postgresql-data-source>
+    <jdbc-ee:connector name="GEP-Database-PRODABEL" dataSource-ref="PostgreSQL_DB_PRODABEL" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database"> </jdbc-ee:connector>
+    <jdbc-ee:postgresql-data-source name="PostgreSQL_DB_BHTRANS" user="postgres" password="postgres" url="jdbc:postgresql://localhost:5433/rh-bhtrans" transactionIsolation="UNSPECIFIED" doc:name="PostgreSQL Data Source"></jdbc-ee:postgresql-data-source>
+    <jdbc-ee:connector name="GEP-Database-BHTRANS" dataSource-ref="PostgreSQL_DB_BHTRANS" validateConnections="true" queryTimeout="-1" pollingFrequency="0" doc:name="Database"></jdbc-ee:connector>
+    <flow name="LoginProdabel" doc:name="LoginProdabel"> 
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="mulejdbc-prodabel" doc:name="HTTP"></http:inbound-endpoint>  
+        <jdbc-ee:outbound-endpoint exchange-pattern="request-response" queryKey="login" queryTimeout="-1" connector-ref="GEP-Database-PRODABEL" doc:name="Database Prodabel"> 
+            <jdbc-ee:query key="login" value="select nome from servidor_prodabel where cpf = #[message.inboundProperties['cpf']] and senha = #[message.inboundProperties['senha']]"></jdbc-ee:query>  
+        </jdbc-ee:outbound-endpoint>  
+        <json:object-to-json-transformer doc:name="Object to JSON"></json:object-to-json-transformer>  
+    </flow>
+    <flow name="LoginBHTrans" doc:name="LoginBHTrans"> 
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="mulejdbc-bhtrans" doc:name="HTTP"></http:inbound-endpoint>  
+        <jdbc-ee:outbound-endpoint exchange-pattern="request-response" queryKey="login" queryTimeout="-1" connector-ref="GEP-Database-BHTRANS" doc:name="Database BHTrans"> 
+            <jdbc-ee:query key="login" value="select nome from servidor_bhtrans where cpf = #[message.inboundProperties['cpf']] and senha = #[message.inboundProperties['senha']]"></jdbc-ee:query>  
+        </jdbc-ee:outbound-endpoint>  
+        <json:object-to-json-transformer doc:name="Object to JSON"></json:object-to-json-transformer>  
+    </flow>
+</mule>

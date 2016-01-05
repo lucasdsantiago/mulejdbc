@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="mulejdbc">
+    <global-element name="PostgreSQL Data Source" type="http://www.mulesoft.org/schema/mule/ee/jdbc/postgresql-data-source" entity-id="PostgreSQL Data Source#1">
+        <properties>
+            <property name="password" value="postgres"/>
+            <property name="transactionIsolation" value="UNSPECIFIED"/>
+            <property name="database"/>
+            <property name="port"/>
+            <property name="name" value="PostgreSQL_DB_PRODABEL"/>
+            <property name="host"/>
+            <property name="loginTimeout"/>
+            <property name="user" value="postgres"/>
+            <property name="url" value="jdbc:postgresql://localhost:5433/rh-prodabel"/>
+            <property name="auxiliary;index" value="1"/>
+        </properties>
+    </global-element>
+    <global-element name="Database" type="http://www.mulesoft.org/schema/mule/ee/jdbc/connector" entity-id="Database#1">
+        <properties>
+            <property name="queryTimeout" value="-1"/>
+            <property name="dispatcherPoolFactory-ref"/>
+            <property name="pollingFrequency" value="0"/>
+            <property name="dataSource-ref to JDBC DataSource" value="PostgreSQL_DB_PRODABEL"/>
+            <property name="validateConnections" value="true"/>
+            <property name="handleOutputResultSets"/>
+            <property name="auxiliary;index" value="2"/>
+            <property name="queryRunner-ref"/>
+            <property name="dynamicNotification"/>
+            <property name="dataSource-ref to Bean" value="PostgreSQL_DB_PRODABEL"/>
+            <property name="resultSetHandler-ref"/>
+            <property name="name" value="GEP-Database-PRODABEL"/>
+            <property name="transactionPerMessage"/>
+        </properties>
+    </global-element>
+    <global-element name="PostgreSQL Data Source" type="http://www.mulesoft.org/schema/mule/ee/jdbc/postgresql-data-source" entity-id="PostgreSQL Data Source#2">
+        <properties>
+            <property name="password" value="postgres"/>
+            <property name="transactionIsolation" value="UNSPECIFIED"/>
+            <property name="database"/>
+            <property name="port"/>
+            <property name="name" value="PostgreSQL_DB_BHTRANS"/>
+            <property name="host"/>
+            <property name="loginTimeout"/>
+            <property name="user" value="postgres"/>
+            <property name="url" value="jdbc:postgresql://localhost:5433/rh-bhtrans"/>
+            <property name="auxiliary;index" value="3"/>
+        </properties>
+    </global-element>
+    <global-element name="Database" type="http://www.mulesoft.org/schema/mule/ee/jdbc/connector" entity-id="Database#2">
+        <properties>
+            <property name="queryTimeout" value="-1"/>
+            <property name="dispatcherPoolFactory-ref"/>
+            <property name="pollingFrequency" value="0"/>
+            <property name="dataSource-ref to JDBC DataSource" value="PostgreSQL_DB_BHTRANS"/>
+            <property name="validateConnections" value="true"/>
+            <property name="handleOutputResultSets"/>
+            <property name="auxiliary;index" value="4"/>
+            <property name="queryRunner-ref"/>
+            <property name="dynamicNotification"/>
+            <property name="dataSource-ref to Bean" value="PostgreSQL_DB_BHTRANS"/>
+            <property name="resultSetHandler-ref"/>
+            <property name="name" value="GEP-Database-BHTRANS"/>
+            <property name="transactionPerMessage"/>
+        </properties>
+    </global-element>
+    <flow SubFlow="false" name="LoginProdabel" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="ed82fad9-fc2e-47ef-b4c7-d6e7b68b5b73">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="5"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#1">
+            <graphicalData x="0" y="0" width="0" height="0"/>
+            <endpoint direction="Inbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="connector-ref"/>
+                    <property name="address"/>
+                    <property name="method"/>
+                    <property name="mimeType"/>
+                    <property name="encoding"/>
+                    <property name="httpLabel"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="auxiliary;index" value="6"/>
+                    <property name="path" value="mulejdbc-prodabel"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="password"/>
+                    <property name="keep-alive"/>
+                    <property name="port" value="8081"/>
+                    <property name="followRedirects"/>
+                    <property name="host" value="localhost"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
+                    <property name="transformer-refs"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="user"/>
+                    <property name="contentType"/>
+                    <property name="responseTimeout"/>
+                </properties>
+            </endpoint>
+            <endpoint direction="Outbound" message-exchange-pattern="OneWay" name="Database Prodabel" type="org.mule.tooling.ui.modules.core.jdbc.JDBC" entity-id="Database#3">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name=""/>
+                    <property name="connector-ref" value="GEP-Database-PRODABEL"/>
+                    <property name="queryTimeout" value="-1"/>
+                    <property name="queryKey" value="login"/>
+                    <property name="address"/>
+                    <property name="pollingFrequency"/>
+                    <property name="mimeType"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="auxiliary;index" value="7"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="responseTimeout"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/ee/jdbc/query;0">
+                        <property name="auxiliary;wrapIn" value="8"/>
+                        <property name="value" value="select nome from servidor_prodabel where cpf = #[message.inboundProperties['cpf']] and senha = #[message.inboundProperties['senha']]"/>
+                        <property name="key" value="login"/>
+                        <property name="auxiliary;index" value="8"/>
+                    </property-collection>
+                </properties>
+            </endpoint>
+            <pattern name="Object to JSON" type="http://www.mulesoft.org/schema/mule/json/object-to-json-transformer" entity-id="Object to JSON#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="mapper-ref"/>
+                    <property name="returnClass"/>
+                    <property name="mimeType"/>
+                    <property name="sourceClass"/>
+                    <property name="encoding"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="auxiliary;index" value="9"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+    <flow SubFlow="false" name="LoginBHTrans" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="2d1b6b73-2fc6-4d97-8747-846a2fde4ea6">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="10"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#2">
+            <graphicalData x="0" y="0" width="0" height="0"/>
+            <endpoint direction="Inbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#2">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="connector-ref"/>
+                    <property name="address"/>
+                    <property name="method"/>
+                    <property name="mimeType"/>
+                    <property name="encoding"/>
+                    <property name="httpLabel"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="auxiliary;index" value="11"/>
+                    <property name="path" value="mulejdbc-bhtrans"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="password"/>
+                    <property name="keep-alive"/>
+                    <property name="port" value="8081"/>
+                    <property name="followRedirects"/>
+                    <property name="host" value="localhost"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
+                    <property name="transformer-refs"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="user"/>
+                    <property name="contentType"/>
+                    <property name="responseTimeout"/>
+                </properties>
+            </endpoint>
+            <endpoint direction="Outbound" message-exchange-pattern="OneWay" name="Database BHTrans" type="org.mule.tooling.ui.modules.core.jdbc.JDBC" entity-id="Database#4">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name=""/>
+                    <property name="connector-ref" value="GEP-Database-BHTRANS"/>
+                    <property name="queryTimeout" value="-1"/>
+                    <property name="queryKey" value="login"/>
+                    <property name="address"/>
+                    <property name="pollingFrequency"/>
+                    <property name="mimeType"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="auxiliary;index" value="12"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="responseTimeout"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/ee/jdbc/query;0">
+                        <property name="auxiliary;wrapIn" value="13"/>
+                        <property name="value" value="select nome from servidor_bhtrans where cpf = #[message.inboundProperties['cpf']] and senha = #[message.inboundProperties['senha']]"/>
+                        <property name="key" value="login"/>
+                        <property name="auxiliary;index" value="13"/>
+                    </property-collection>
+                </properties>
+            </endpoint>
+            <pattern name="Object to JSON" type="http://www.mulesoft.org/schema/mule/json/object-to-json-transformer" entity-id="Object to JSON#2">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="mapper-ref"/>
+                    <property name="returnClass"/>
+                    <property name="mimeType"/>
+                    <property name="sourceClass"/>
+                    <property name="encoding"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="auxiliary;index" value="14"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+</mule-configuration>
